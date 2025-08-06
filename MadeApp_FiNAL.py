@@ -20,10 +20,8 @@ def load_local_font(font_filename="GmarketSansTTFBold.ttf", default_font="Malgun
         fm.fontManager.addfont(font_path)
         font_name = fm.FontProperties(fname=font_path).get_name()
         plt.rc('font', family=font_name)
-        st.info(f"✅ 폰트 '{font_filename}'가 성공적으로 적용되었습니다.")
     else:
-        st.warning(f"⚠️ 폰트 파일 '{font_filename}'을(를) 찾을 수 없습니다. 기본 폰트인 '{default_font}'을(를) 사용합니다.")
-        plt.rc('font', family=default_font) # Fallback font
+        plt.rc('font', family=default_font) #  
     plt.rcParams['axes.unicode_minus'] = False # Prevents issues with minus signs in Korean
 
 # 폰트 적용
@@ -361,3 +359,4 @@ if page == '식단 조절':
         if st.button("식단 조절 결과 보기", key="show_diet_results_btn"):
             st.session_state.current_view = 'diet_results'
             st.rerun()
+
