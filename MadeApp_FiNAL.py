@@ -4,19 +4,35 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib import font_manager as fm
+import os
 
-# 초기 변수 및 설정
-kcal_per_day_display = 0
-st.sidebar.title('Menu❤️')
-page = st.sidebar.radio("페이지 선택", ['홈', '수면 리듬 관리', '식단 조절'])
-
-# 폰트 설정
-font_path = 'C:\\Users\\user\\AppData\\Local\\Microsoft\\Windows\\Fonts\\GmarketSansTTFBold.ttf'
-fm.fontManager.addfont(font_path)
-font_name = fm.FontProperties(fname=font_path).get_name()
-plt.rc('font', family=font_name)
-plt.rcParams['axes.unicode_minus'] = False
+# 페이지 설정
 st.set_page_config(page_title="생활 관리 프로그램", layout="centered")
+
+# --- 폰트 설정 함수 추가 ---
+def load_local_font(font_filename="GmarketSansTTFBold.ttf", default_font="Malgun Gothic"):
+    """
+    Looks for a font file in the current working directory and applies it to matplotlib.
+    If not found, it falls back to a default font.
+    """
+    font_path = os.path.join(os.getcwd(), font_filename)
+    if os.path.exists(font_path):
+        fm.fontManager.addfont(font_path)
+        font_name = fm.FontProperties(fname=font_path).get_name()
+        plt.rc('font', family=font_name)
+        st.info(f"✅ 폰트 '{font_filename}'가 성공적으로 적용되었습니다.")
+    else:
+        st.warning(f"⚠️ 폰트 파일 '{font_filename}'을(를) 찾을 수 없습니다. 기본 폰트인 '{default_font}'을(를) 사용합니다.")
+        plt.rc('font', family=default_font) # Fallback font
+    plt.rcParams['axes.unicode_minus'] = False # Prevents issues with minus signs in Korean
+
+# 폰트 적용
+load_local_font()
+
+# --- 초기 변수 및 세션 상태 설정 (기존 코드) ---
+kcal_per_day_display = 0
+st.sidebar.title('Menu')
+page = st.sidebar.radio("페이지 선택", ['홈', '수면 리듬 관리', '식단 조절'])
 
 # 세션 상태 초기화
 if 'current_view' not in st.session_state:
